@@ -1,0 +1,29 @@
+services:
+    react-frontend-build:
+        build:
+            context: ./react-frontend
+        volumes:
+            - ./react-frontend/dist:/dist # Share the build output
+        command: yarn build # Build the frontend for production
+
+    react-frontend:
+        build:
+            context: ./react-frontend
+        ports:
+            - '3000:3000' # Expose the dev server
+        volumes:
+            - ./react-frontend:/app # Mount the full frontend directory for HMR
+            - /app/node_modules # Preserve node_modules
+        command: yarn dev # Run the frontend dev server
+        environment:
+            - CHOKIDAR_USEPOLLING=true # Ensure file changes are detected inside Docker
+
+    rust-backend:
+        build:
+            context: ./rust-backend
+        ports:
+            - '8080:8080'
+        volumes:
+            - ./react-frontend/dist:/dist # Mount the frontend build for the backend
+        depends_on:
+            - react-frontend-build # Wait for the production build of the frontend
