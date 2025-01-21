@@ -59,7 +59,13 @@
 
 ```bash
     yarn create vite frontend --template react-ts
+```
+
+```bash
     cd frontend
+```
+
+```bash
     yarn install
 ```
 
@@ -81,6 +87,9 @@
 
 ```bash
     cargo new backend
+```
+
+```bash
     cd backend
 ```
 
